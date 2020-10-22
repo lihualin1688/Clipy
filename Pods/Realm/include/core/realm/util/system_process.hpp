@@ -1,22 +1,3 @@
-/*************************************************************************
- *
- * REALM CONFIDENTIAL
- * __________________
- *
- *  [2011] - [2015] Realm Inc
- *  All Rights Reserved.
- *
- * NOTICE:  All information contained herein is, and remains
- * the property of Realm Incorporated and its suppliers,
- * if any.  The intellectual and technical concepts contained
- * herein are proprietary to Realm Incorporated
- * and its suppliers and may be covered by U.S. and Foreign Patents,
- * patents in process, and are protected by trade secret or copyright law.
- * Dissemination of this information or reproduction of this material
- * is strictly forbidden unless prior written permission is obtained
- * from Realm Incorporated.
- *
- **************************************************************************/
 #ifndef REALM_UTIL_SYSTEM_PROCESS_HPP
 #define REALM_UTIL_SYSTEM_PROCESS_HPP
 
@@ -54,6 +35,12 @@ struct ExitInfo {
     /// ::fork(), an exit status of 127 will be used (aligned with
     /// ::posix_spawn()).
     int status = 0;
+
+    /// In some cases, ChildHandle::join() will set `signal_name` when it sets
+    /// `killed_by_signal` to a non-zero value. In those cases, `signal_name` is
+    /// set to point to a null-terminated string specifying the name of the
+    /// signal that killed the child process.
+    const char* signal_name = nullptr;
 
     /// Returns true if, and only if both `killed_by_signal` and `status` are
     /// zero.
@@ -98,8 +85,8 @@ private:
 
     ChildHandle(Impl*) noexcept;
 
-    friend ChildHandle spawn(const std::string&, const std::vector<std::string>&,
-                             const Environment&, const SpawnConfig&);
+    friend ChildHandle spawn(const std::string&, const std::vector<std::string>&, const Environment&,
+                             const SpawnConfig&);
 };
 
 
@@ -110,10 +97,9 @@ bool is_spawn_supported() noexcept;
 
 //@{
 /// Spawn a child process.
-ChildHandle spawn(const std::string& path, const std::vector<std::string>& args = {},
-                  const Environment& = {});
-ChildHandle spawn(const std::string& path, const std::vector<std::string>& args,
-                  const Environment&, const SpawnConfig&);
+ChildHandle spawn(const std::string& path, const std::vector<std::string>& args = {}, const Environment& = {});
+ChildHandle spawn(const std::string& path, const std::vector<std::string>& args, const Environment&,
+                  const SpawnConfig&);
 //@}
 
 
@@ -176,8 +162,6 @@ private:
 };
 
 
-
-
 // Implementation
 
 inline ExitInfo::operator bool() const noexcept
@@ -185,8 +169,7 @@ inline ExitInfo::operator bool() const noexcept
     return (killed_by_signal == 0 && status == 0);
 }
 
-inline ChildHandle spawn(const std::string& path, const std::vector<std::string>& args,
-                         const Environment& env)
+inline ChildHandle spawn(const std::string& path, const std::vector<std::string>& args, const Environment& env)
 {
     return spawn(path, args, env, SpawnConfig{}); // Throws
 }

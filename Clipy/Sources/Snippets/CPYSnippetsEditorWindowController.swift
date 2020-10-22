@@ -476,8 +476,8 @@ extension CPYSnippetsEditorWindowController: RecordViewDelegate {
         AppEnvironment.current.hotKeyService.unregisterSnippetHotKey(with: selectedFolder.identifier)
     }
 
-    func recordView(_ recordView: RecordView, didChangeKeyCombo keyCombo: KeyCombo) {
-        guard let selectedFolder = selectedFolder else { return }
+    func recordView(_ recordView: RecordView, didChangeKeyCombo keyCombo: KeyCombo?) {
+        guard let selectedFolder = selectedFolder, let keyCombo = keyCombo else { return }
         AppEnvironment.current.hotKeyService.registerSnippetHotKey(with: selectedFolder.identifier, keyCombo: keyCombo)
     }
 
