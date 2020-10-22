@@ -23,7 +23,7 @@ import RealmSwift
 import LetsMove
 
 @NSApplicationMain
-class AppDelegate: NSObject {
+class AppDelegate: NSObject, NSMenuItemValidation {
 
     // MARK: - Properties
     let screenshotObserver = ScreenShotObserver()
@@ -37,7 +37,7 @@ class AppDelegate: NSObject {
     }
 
     // MARK: - Override Methods
-    override func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
+    func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
         if menuItem.action == #selector(AppDelegate.clearAllHistory) {
             let realm = try! Realm()
             return !realm.objects(CPYClip.self).isEmpty
