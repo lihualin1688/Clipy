@@ -12,7 +12,7 @@ Clipy is a Clipboard extension app for macOS.
 
 ---
 
-__Requirement__: macOS 10.10 Yosemite or higher
+__Requirement__: macOS 10.13 High Sierra or higher
 
 __Distribution Site__ : <https://clipy-app.com>
 
@@ -22,6 +22,12 @@ __Distribution Site__ : <https://clipy-app.com>
 * macOS 10.13 High Sierra
 * Xcode 12.1
 * Swift 5
+
+### Why have this fork
+1. May be [github.com/Clipy/Clipy](https://github.com/Clipy/Clipy) is abandoned?
+1. Add search function
+2. Support dark mode
+3. Update third-party libraries
 
 ### How to Build
 0. Move to the project root directory
